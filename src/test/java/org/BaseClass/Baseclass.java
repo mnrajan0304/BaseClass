@@ -303,13 +303,14 @@ public class Baseclass {
 		Navigation navigate = driver.navigate();
 		return navigate;
 	}
-	public Actions actions() {
-		Actions action = new Actions(driver);
-		return action;
-	}
 	public Alert alert() {
 		Alert alert = driver.switchTo().alert();
 		return alert;
 	}
+	public Actions actions() {
+		Actions action = new Actions(driver);
+		return action;
+	}
+	
 }
 
