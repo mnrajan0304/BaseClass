@@ -1,15 +1,29 @@
 package org.BaseClass;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
@@ -27,7 +41,13 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.Alert;
 
-public class Baseclass {
+public class Baseclass extends ExcelUtils{
+	
+	public Baseclass() {
+		
+	}
+
+	
 	WebDriver driver;
 	
 	public void browserLaunch(String browserName) {
@@ -289,27 +309,170 @@ public class Baseclass {
 		driver.get("https://"+username+":"+password+"@"+urlwithouthttsps);
 	}
 	
-	public void jsExecutor() {
-		
+	
+	public void webtableHeading() {
+		WebElement table = driver.findElement(By.tagName("table"));
+		WebElement heading = table.findElement(By.tagName("thead"));
+		WebElement row= heading.findElement(By.tagName("tr"));
+		List<WebElement> headingList = row.findElements(By.tagName("th"));
+		for (WebElement i: headingList) {
+		System.out.print(i.getText()+"     ");	
+		}
 	}
-	public void webtable() {
-		
+	public void webtableBody() {
+		WebElement table = driver.findElement(By.tagName("table"));
+		WebElement body = table.findElement(By.tagName("tbody"));
+		List<WebElement> rows = body.findElements(By.tagName("tr"));
+		for (WebElement i1: rows) {
+			System.out.println();
+			List<WebElement> data = i1.findElements(By.tagName("td"));
+			for (WebElement i2:data) {
+			System.out.print(i2.getText()+"     ");	
+			}
+		}
 	}
+	public void webtableFoot() {
+	    WebElement table = driver.findElement(By.tagName("table"));
+		WebElement foot = table.findElement(By.tagName("tfoot"));
+		WebElement fRow = foot.findElement(By.tagName("tr"));
+		List<WebElement> fhead = fRow.findElements(By.tagName("th"));
+		System.out.println();
+		for(WebElement i2: fhead) {
+			System.out.print(i2.getText());
+		}
+		List<WebElement> fData = fRow.findElements(By.tagName("td"));
+		for(WebElement i2: fData) {
+			System.out.println(i2.getText());
+		}
+	}
+	
 	public void brokenLinks() {
+		URL url=null;
+		URLConnection connect=null;
+		String responseMessage = null;
+		int responseCode = 0;
+		List<WebElement> li = driver.findElements(By.tagName("a"));
+		System.out.println("Num of links: "+li.size());
+		int validCount= 0;
+		int invalidCount= 0;
 		
+		for(WebElement e: li) {
+			String attribute = e.getAttribute("href");
+			
+			if (attribute!=null) {
+			
+			try {
+				url = new URL(attribute);
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+			
+			try {
+				connect = url.openConnection();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			HttpURLConnection httpconnect = (HttpURLConnection) connect;
+			
+			try {
+				responseCode = httpconnect.getResponseCode();
+			} catch (IOException e2) {
+				e2.printStackTrace();
+			}
+			
+			try {
+				responseMessage = httpconnect.getResponseMessage();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			if (responseCode==200|| responseMessage=="Ok") {
+				System.out.println("Valid Link"+ attribute);
+				validCount++;
+			}
+				else {
+					System.out.println("Broken link"+ attribute);
+					invalidCount++;
+			}
+		}}
+		System.out.println("Total valid count"+ validCount);
+		System.out.println("Total Invalid count"+ invalidCount);
+		driver.quit();
 	}
 	
 	public Navigation navigate() {
 		Navigation navigate = driver.navigate();
 		return navigate;
 	}
-	public Actions actions() {
-		Actions action = new Actions(driver);
-		return action;
-	}
 	public Alert alert() {
 		Alert alert = driver.switchTo().alert();
 		return alert;
 	}
+	public Actions actions() {
+		Actions action = new Actions(driver);
+		return action;
+	}
+	public JavascriptExecutor jsExecutor() {
+		JavascriptExecutor js= (JavascriptExecutor) driver;
+		return js;
+	}
 }
+
+ class ExcelUtils {
+	static String projectPath;
+	static File file;
+	static FileInputStream fi;
+	static XSSFWorkbook workbook;
+	static Sheet sheet;
+	static Row row;
+	static Cell cell;
+		 public  int getRowCount(String path, String sheetName) {
+		 projectPath = System.getProperty("user.dir");
+		 file= new File(path);
+		try {
+			FileInputStream fi = new FileInputStream(file);
+		 workbook = new XSSFWorkbook(fi);
+		 sheet = workbook.getSheet(sheetName);
+		int rowCount = sheet.getPhysicalNumberOfRows();
+		//System.out.println(rowCount);
+		return rowCount;
+		}
+		catch(Exception exp) {
+			System.out.println(exp.getMessage()); 
+			exp.printStackTrace();
+			return 0;
+		}
+		}
+		public  int getCellCount(int rownum ) {
+				row = sheet.getRow(rownum);
+			int cellCount = row.getPhysicalNumberOfCells();
+			//System.out.println(cellCount);
+			return cellCount;
+		}
+		public  String getCellValue(int rownum, int cellnum) {
+			row = sheet.getRow(rownum);
+			cell = row.getCell(cellnum);
+			
+			int celltype= cell.getCellType();
+			 if (celltype==1){
+					String StringCellValue = cell.getStringCellValue();
+					//System.out.println(StringCellValue);
+					return StringCellValue;
+				}
+			else if (DateUtil.isCellDateFormatted(cell)) {
+				Date datecell = cell.getDateCellValue();
+			DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+			String date = dateformat.format(datecell);
+			//System.out.println(date);
+			return date;
+			}
+			else {
+				double dou = cell.getNumericCellValue();
+				String NumericCellValue = String.valueOf(dou);
+				//System.out.println(NumericCellValue);
+				return NumericCellValue;
+			}
+		}
+}
+
 

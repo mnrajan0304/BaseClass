@@ -8,7 +8,17 @@ public class summaTesting {
 	public static void main(String[] args) {
 		
 		Baseclass base= new Baseclass();
-		base.browserLaunch("chrome");
-		base.autheticationPopup("admin","admin","the-internet.herokuapp.com/basic_auth");
+		
+		int rowCount = base.getRowCount(".\\src\\main\\resources\\GeneralData.xlsx", "inputs");
+		int cellCount = base.getCellCount(0);
+	
+		Object[][] data = new Object[rowCount-1][cellCount];
+		for(int i= 1; i<rowCount; i++) {
+			for(int j=0; j<cellCount; j++) {
+				String value = base.getCellValue(i, j);
+				data[i-1][j] = value;
+				System.out.println(value);
+			}
+		} 
 	}
 }
