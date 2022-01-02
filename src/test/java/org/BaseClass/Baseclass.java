@@ -46,11 +46,10 @@ public class Baseclass extends ExcelUtils{
 	public Baseclass() {
 		
 	}
-
 	
-	WebDriver driver;
+	static WebDriver driver;
 	
-	public void browserLaunch(String browserName) {
+	public static void browserLaunch(String browserName) {
 		if (browserName.equalsIgnoreCase("chrome")) {
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\mnrajan\\Desktop\\Softwares\\chromedriver_win32\\chromedriver.exe");
 		 driver = new ChromeDriver();
@@ -63,26 +62,26 @@ public class Baseclass extends ExcelUtils{
 			System.out.println("Error: Browser not support");
 	}
 	
-	public void get(String url) {
+	public static void get(String url) {
 		driver.get(url);
 	}
 	
-	public String getTitle() {
+	public static  String getTitle() {
 		String title = driver.getTitle();
 		return title;
 	}
 	
-	public String currentUrl() {
+	public static  String currentUrl() {
 		String currentUrl = driver.getCurrentUrl();
 		return currentUrl;
 	}
 	
-	public String pageSource() {
+	public static  String pageSource() {
 		String pageSource = driver.getPageSource();
 		return pageSource;
 	}
 	
-	public WebElement findElement(String by, String value) {
+	public static  WebElement findElement(String by, String value) {
 		
 		WebElement element = null;
 		if (by.equalsIgnoreCase("name"))
@@ -106,78 +105,80 @@ public class Baseclass extends ExcelUtils{
 		return element;
 	}
 	
-	public Options manage() {
+	public static  Options manage() {
 		org.openqa.selenium.WebDriver.Options options = driver.manage();
 		return options;
 	}
-	public Window window() {
+	public static  Window window() {
 		Window window = driver.manage().window();
 		return window;
 	}
-	public void maximize() {
+	public static  void maximize() {
 		driver.manage().window().maximize();
 	}
-	public void clearAllCookies() {
+	public static  void clearAllCookies() {
 		driver.manage().deleteAllCookies();
 	}
 	
-	public void close() {
+	public static  void close() {
 		driver.close();
 	}
 	
-	public void quit() {
+	public static  void quit() {
 		driver.quit();
 	}
 	
-	public void sendKeys(WebElement element, String value) {
+	public static  void sendKeys(WebElement element, String value) {
 				element.sendKeys(value);
 	}
 
-	public void clear(WebElement element) {
+	public static  void clear(WebElement element) {
 		element.clear();
 	}
-	
-	public String getText(WebElement element) {
+	public static void click(WebElement element) {
+		element.click();
+	}
+	public static  String getText(WebElement element) {
 		String Text = element.getText();
 		return Text;
 	}
-	public String getAttribute(WebElement element, String attribute_name ) {
+	public static  String getAttribute(WebElement element, String attribute_name ) {
 		String attribute = element.getAttribute(attribute_name);
 		return attribute;
 	}
-	public String getTagName(WebElement element) {
+	public static  String getTagName(WebElement element) {
 		String tag = element.getTagName();
 		return tag;
 	}
-	public String getCssValue(WebElement element, String value_name) {
+	public static  String getCssValue(WebElement element, String value_name) {
 		String cssvalue = element.getCssValue(value_name);
 		return cssvalue;
 	}
-	public Point getLocation(WebElement element) {
+	public static  Point getLocation(WebElement element) {
 		Point point = element.getLocation();
 		return point;
 	}
-	public Dimension getSize(WebElement element) {
+	public static  Dimension getSize(WebElement element) {
 		Dimension dimension = element.getSize();
 		return dimension;
 	}
-	public boolean isDisplayed(WebElement element) {
+	public static  boolean isDisplayed(WebElement element) {
 		boolean displayed = element.isDisplayed();
 		return displayed;
 	}
-	public boolean isSelected(WebElement element) {
+	public static  boolean isSelected(WebElement element) {
 		boolean selected = element.isSelected();
 		return selected;
 	}
-	public boolean isEnabled(WebElement element) {
+	public static  boolean isEnabled(WebElement element) {
 		boolean enabled = element.isEnabled();
 		return enabled;
 	}
-	public void submit(WebElement element) {
+	public static  void submit(WebElement element) {
 		element.submit();
 	}
 	
-	public void select(WebElement element, String type, String value) {
+	public static  void select(WebElement element, String type, String value) {
 		Select s= new Select(element);
 		if(type.equalsIgnoreCase("index"))
 		s.selectByIndex(Integer.parseInt(value)); //String to integer
@@ -187,7 +188,7 @@ public class Baseclass extends ExcelUtils{
 		s.selectByVisibleText(value);
 	}
 	
-	public void deselect(WebElement element, String type, String value) {
+	public static  void deselect(WebElement element, String type, String value) {
 		Select s= new Select(element);
 		if (s.isMultiple()==true) {
 		if(type.equalsIgnoreCase("index"))
@@ -200,26 +201,26 @@ public class Baseclass extends ExcelUtils{
 		else System.out.println("Deslect option can't perform here");
 	}
 	
-	public void deselectAll(WebElement element) {
+	public static  void deselectAll(WebElement element) {
 		Select s= new Select(element);
 		s.deselectAll();
 	}
 			
-	public List<WebElement> getAllSelectedOptions(WebElement element) {
+	public static  List<WebElement> getAllSelectedOptions(WebElement element) {
 		Select s= new Select(element);
 		 return s.getAllSelectedOptions();
 	}
 		
-	public WebElement getFirstSelectedOption(WebElement element) {
+	public static  WebElement getFirstSelectedOption(WebElement element) {
 		Select s= new Select(element);
 		return s.getFirstSelectedOption();
 	}
-	public List<WebElement> getOptions(WebElement element) {
+	public static  List<WebElement> getOptions(WebElement element) {
 		Select s= new Select(element);
 		return s.getOptions();
 	}
 	
-	public String getAllSelectedOptionsText(WebElement element) {
+	public static  String getAllSelectedOptionsText(WebElement element) {
 		Select s= new Select(element);
 		List<WebElement> li = s.getAllSelectedOptions();
 		String text= null;
@@ -229,7 +230,7 @@ public class Baseclass extends ExcelUtils{
 		}		
 		return text;
 	}
-	public String getOptionsText(WebElement element) {
+	public static  String getOptionsText(WebElement element) {
 		Select s= new Select(element);
 		List<WebElement> li = s.getOptions();
 		String text= null;
@@ -240,7 +241,7 @@ public class Baseclass extends ExcelUtils{
 		return text;
 	}
 	
-	public void screenshot(String name) {
+	public static  void screenshot(String name) {
 		TakesScreenshot tk =  (TakesScreenshot) driver;
 		File source = tk.getScreenshotAs(OutputType.FILE);
 		File des = new File(".//screenshot//"+name+".png");
@@ -250,7 +251,7 @@ public class Baseclass extends ExcelUtils{
 			e.printStackTrace();
 		}
 	}
-	public void waitThread(int time) {
+	public static  void waitThread(int time) {
 		try {
 			Thread.sleep(time);
 		} catch (InterruptedException e) {
@@ -259,17 +260,17 @@ public class Baseclass extends ExcelUtils{
 	}
 
 	@SuppressWarnings("deprecation")
-	public void waitImplicit(int time) {
+	public static  void waitImplicit(int time) {
 		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
 	}
 	
-	public WebDriverWait waitExplicit(int time) {
+	public static  WebDriverWait waitExplicit(int time) {
 		@SuppressWarnings("deprecation")
 		WebDriverWait wait = new WebDriverWait(driver, time);
 		return wait;
 	}
 	
-	public void waitFluent(int withTimeout, int pollingEvery) {
+	public static  void waitFluent(int withTimeout, int pollingEvery) {
 	
 		@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
 		Wait wait = new FluentWait(driver)
@@ -278,39 +279,39 @@ public class Baseclass extends ExcelUtils{
                 .ignoring(Exception.class);
 	}
 	
-	public void switchtoFrame(String using) {
+	public static  void switchtoFrame(String using) {
 		if (using.equalsIgnoreCase("id")||using.equalsIgnoreCase("name"))
 		driver.switchTo().frame(using);
 		else if (using.equalsIgnoreCase("index")) 
 			driver.switchTo().frame(Integer.parseInt(using));
 	}
 	
-	public void switchtoFrameelement(WebElement element) {
+	public static  void switchtoFrameelement(WebElement element) {
 		driver.switchTo().frame(element);
 	}
 	
-	public String windowHandle() {
+	public static  String windowHandle() {
 		return driver.getWindowHandle();
 	}
 	
-	public Set<String> windowHandles() {
+	public static  Set<String> windowHandles() {
 		return driver.getWindowHandles();
 	}
 	
-	public void switchWindowid(String id) {
+	public static  void switchWindowid(String id) {
 		  driver.switchTo().window(id);
 	}
 	
-	public void fileUpload(WebElement element, String path) {
+	public static  void fileUpload(WebElement element, String path) {
 		element.sendKeys(path);
 	}
 	
-	public void autheticationPopup(String username, String password, String urlwithouthttsps) {
+	public static  void autheticationPopup(String username, String password, String urlwithouthttsps) {
 		driver.get("https://"+username+":"+password+"@"+urlwithouthttsps);
 	}
 	
 	
-	public void webtableHeading() {
+	public static  void webtableHeading() {
 		WebElement table = driver.findElement(By.tagName("table"));
 		WebElement heading = table.findElement(By.tagName("thead"));
 		WebElement row= heading.findElement(By.tagName("tr"));
@@ -319,7 +320,7 @@ public class Baseclass extends ExcelUtils{
 		System.out.print(i.getText()+"     ");	
 		}
 	}
-	public void webtableBody() {
+	public static  void webtableBody() {
 		WebElement table = driver.findElement(By.tagName("table"));
 		WebElement body = table.findElement(By.tagName("tbody"));
 		List<WebElement> rows = body.findElements(By.tagName("tr"));
@@ -331,7 +332,7 @@ public class Baseclass extends ExcelUtils{
 			}
 		}
 	}
-	public void webtableFoot() {
+	public static  void webtableFoot() {
 	    WebElement table = driver.findElement(By.tagName("table"));
 		WebElement foot = table.findElement(By.tagName("tfoot"));
 		WebElement fRow = foot.findElement(By.tagName("tr"));
@@ -346,7 +347,7 @@ public class Baseclass extends ExcelUtils{
 		}
 	}
 	
-	public void brokenLinks() {
+	public static  void brokenLinks() {
 		URL url=null;
 		URLConnection connect=null;
 		String responseMessage = null;
@@ -400,25 +401,25 @@ public class Baseclass extends ExcelUtils{
 		driver.quit();
 	}
 	
-	public Navigation navigate() {
+	public static  Navigation navigate() {
 		Navigation navigate = driver.navigate();
 		return navigate;
 	}
-	public Alert alert() {
+	public static  Alert alert() {
 		Alert alert = driver.switchTo().alert();
 		return alert;
 	}
-	public Actions actions() {
+	public static  Actions actions() {
 		Actions action = new Actions(driver);
 		return action;
 	}
-	public JavascriptExecutor jsExecutor() {
+	public static  JavascriptExecutor jsExecutor() {
 		JavascriptExecutor js= (JavascriptExecutor) driver;
 		return js;
 	}
 }
 
- class ExcelUtils {
+class ExcelUtils {
 	static String projectPath;
 	static File file;
 	static FileInputStream fi;
@@ -426,7 +427,7 @@ public class Baseclass extends ExcelUtils{
 	static Sheet sheet;
 	static Row row;
 	static Cell cell;
-		 public  int getRowCount(String path, String sheetName) {
+		 public   static int getRowCount(String path, String sheetName) {
 		 projectPath = System.getProperty("user.dir");
 		 file= new File(path);
 		try {
@@ -443,13 +444,13 @@ public class Baseclass extends ExcelUtils{
 			return 0;
 		}
 		}
-		public  int getCellCount(int rownum ) {
+		public  static  int getCellCount(int rownum ) {
 				row = sheet.getRow(rownum);
 			int cellCount = row.getPhysicalNumberOfCells();
 			//System.out.println(cellCount);
 			return cellCount;
 		}
-		public  String getCellValue(int rownum, int cellnum) {
+		public  static  String getCellValue(int rownum, int cellnum) {
 			row = sheet.getRow(rownum);
 			cell = row.getCell(cellnum);
 			
