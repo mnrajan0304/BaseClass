@@ -13,33 +13,10 @@ public class summaTesting2 {
 		
 		Baseclass base= new Baseclass();
 		base.browserLaunch("chrome");
-		base.get("http://demo.guru99.com/popup.php");
+		base.get("http://www.facebook.com");
+		base.brokenLinks();
+		base.quit();
 	
-		String PWID= base.windowHandle();
-		System.out.println(PWID);
-		
-		base.findElement("partiallinktext", "Here").click();
-
-		Set<String> allWID= base.windowHandles();
-		
-		
-	
-		for(String s:allWID) {
-			if(!s.equalsIgnoreCase(PWID)) {
-				System.out.println(s);
-				
-				base.switchWindowid(s);
-				//driver.switchTo().window(s);
-			base.maximize();
-			base.findElement("xpath", "/html/body/form/table/tbody/tr[5]/td[2]/input").sendKeys("mani@gmail.com");
-			base.findElement("xpath", "/html/body/form/table/tbody/tr[6]/td[2]/input").submit();
-				
-			/*driver.findElement(By.xpath("/html/body/form/table/tbody/tr[5]/td[2]/input")).sendKeys("mani@gmail.com");
-				
-				driver.findElement(By.xpath("/html/body/form/table/tbody/tr[6]/td[2]/input")).submit();
-				
-				driver.switchTo().defaultContent();  */
-			}
 		}
-		}}
+}
 
